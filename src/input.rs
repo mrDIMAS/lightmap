@@ -1,5 +1,3 @@
-use crate::light::LightDefinition;
-use crate::EntityId;
 use fyrox_math::octree::Octree;
 use nalgebra::{Vector2, Vector3};
 
@@ -9,18 +7,31 @@ pub struct WorldVertex {
     pub second_tex_coord: Vector2<f32>,
 }
 
-pub struct Mesh<Id: EntityId> {
-    pub owner: Id,
+pub struct Mesh {
     /// World-space vertices.
     pub vertices: Vec<WorldVertex>,
     pub triangles: Vec<[u32; 3]>,
     pub octree: Octree,
 }
 
-/// Data set required to generate a lightmap. It could be produced from a scene using [`LightmapInputData::from_scene`] method.
-/// It is used to split preparation step from the actual lightmap generation; to be able to put heavy generation in a separate
-/// thread.
-pub struct LightmapInputData<Id: EntityId> {
-    pub meshes: Vec<Mesh<Id>>,
-    pub lights: Vec<LightDefinition<Id>>,
+impl Mesh {
+    pub fn new(vertices: Vec<WorldVertex>, triangles: Vec<[u32; 3]>) -> Option<Self> {
+        let mut world_space_triangles = Vec::with_capacity(triangles.len() * 3);
+
+        for triangle in triangles.iter() {
+            let a = vertices.get(triangle[0] as usize)?;
+            let b = vertices.get(triangle[1] as usize)?;
+            let c = vertices.get(triangle[2] as usize)?;
+
+            world_space_triangles.push([a.world_position, b.world_position, c.world_position]);
+        }
+
+        let octree = Octree::new(&world_space_triangles, 32);
+
+        Some(Self {
+            vertices,
+            triangles,
+            octree,
+        })
+    }
 }

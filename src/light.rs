@@ -1,10 +1,7 @@
-use crate::EntityId;
 use nalgebra::Vector3;
 
 /// Directional light is a light source with parallel rays. Example: Sun.
-pub struct DirectionalLightDefinition<Id: EntityId> {
-    /// A handle of light in the scene.
-    pub handle: Id,
+pub struct DirectionalLightDefinition {
     /// Intensity is how bright light is. Default is 1.0.
     pub intensity: f32,
     /// Direction of light rays.
@@ -14,9 +11,7 @@ pub struct DirectionalLightDefinition<Id: EntityId> {
 }
 
 /// Spot light is a cone light source. Example: flashlight.
-pub struct SpotLightDefinition<Id: EntityId> {
-    /// A handle of light in the scene.
-    pub handle: Id,
+pub struct SpotLightDefinition {
     /// Intensity is how bright light is. Default is 1.0.
     pub intensity: f32,
     /// Color of light.
@@ -36,9 +31,7 @@ pub struct SpotLightDefinition<Id: EntityId> {
 }
 
 /// Point light is a spherical light source. Example: light bulb.
-pub struct PointLightDefinition<Id: EntityId> {
-    /// A handle of light in the scene.
-    pub handle: Id,
+pub struct PointLightDefinition {
     /// Intensity is how bright light is. Default is 1.0.
     pub intensity: f32,
     /// Position of light in world coordinates.
@@ -52,21 +45,8 @@ pub struct PointLightDefinition<Id: EntityId> {
 }
 
 /// Light definition for lightmap rendering.
-pub enum LightDefinition<Id: EntityId> {
-    /// See docs of [DirectionalLightDefinition](struct.PointLightDefinition.html)
-    Directional(DirectionalLightDefinition<Id>),
-    /// See docs of [SpotLightDefinition](struct.SpotLightDefinition.html)
-    Spot(SpotLightDefinition<Id>),
-    /// See docs of [PointLightDefinition](struct.PointLightDefinition.html)
-    Point(PointLightDefinition<Id>),
-}
-
-impl<Id: EntityId> LightDefinition<Id> {
-    pub fn handle(&self) -> Id {
-        match self {
-            LightDefinition::Directional(v) => v.handle,
-            LightDefinition::Spot(v) => v.handle,
-            LightDefinition::Point(v) => v.handle,
-        }
-    }
+pub enum LightDefinition {
+    Directional(DirectionalLightDefinition),
+    Spot(SpotLightDefinition),
+    Point(PointLightDefinition),
 }
