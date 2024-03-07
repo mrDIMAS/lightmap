@@ -1,6 +1,7 @@
 use nalgebra::Vector3;
 
 /// Directional light is a light source with parallel rays. Example: Sun.
+#[derive(Clone)]
 pub struct DirectionalLightDefinition {
     /// Intensity is how bright light is. Default is 1.0.
     pub intensity: f32,
@@ -11,6 +12,7 @@ pub struct DirectionalLightDefinition {
 }
 
 /// Spot light is a cone light source. Example: flashlight.
+#[derive(Clone)]
 pub struct SpotLightDefinition {
     /// Intensity is how bright light is. Default is 1.0.
     pub intensity: f32,
@@ -31,6 +33,7 @@ pub struct SpotLightDefinition {
 }
 
 /// Point light is a spherical light source. Example: light bulb.
+#[derive(Clone)]
 pub struct PointLightDefinition {
     /// Intensity is how bright light is. Default is 1.0.
     pub intensity: f32,
@@ -45,6 +48,7 @@ pub struct PointLightDefinition {
 }
 
 /// Light definition for lightmap rendering.
+#[derive(Clone)]
 pub enum LightDefinition {
     Directional(DirectionalLightDefinition),
     Spot(SpotLightDefinition),
