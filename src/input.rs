@@ -26,7 +26,7 @@ impl Mesh {
             world_space_triangles.push([a.world_position, b.world_position, c.world_position]);
         }
 
-        let octree = Octree::new(&world_space_triangles, 32);
+        let octree = Octree::new(&world_space_triangles, 64);
 
         Some(Self {
             vertices,
