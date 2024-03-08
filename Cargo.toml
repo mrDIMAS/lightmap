@@ -1,7 +1,17 @@
 [package]
 name = "lightmap"
 version = "0.1.0"
+authors = ["Dmitry Stepanov <d1maxa@yandex.ru>"]
 edition = "2021"
+license = "MIT"
+description = "Light map generator"
+keywords = ["lightmap", "uvgen"]
+include = ["/src/**/*", "/Cargo.toml", "/LICENSE", "/README.md"]
+documentation = "https://docs.rs/lightmap"
+repository = "https://github.com/mrDIMAS/lightmap"
+readme = "README.md"
+resolver = "2"
+rust-version = "1.72"
 
 [dependencies]
 fyrox-math = "0.1.0"
