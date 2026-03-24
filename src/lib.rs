@@ -178,7 +178,7 @@ fn pick(
 
             let center = (uv_a + uv_b + uv_c).scale(1.0 / 3.0);
             let to_center = (center - uv)
-                .try_normalize(std::f32::EPSILON)
+                .try_normalize(f32::EPSILON)
                 .unwrap_or_default()
                 .scale(scale * 0.3333333);
 
@@ -391,8 +391,7 @@ impl LightMap {
             });
 
         // Prepare light map for bilinear filtration. This step is mandatory to prevent bleeding.
-        let mut rgb_pixels: Vec<Vector3<u8>> =
-            Vec::with_capacity((atlas_size * atlas_size) as usize);
+        let mut rgb_pixels: Vec<Vector3<u8>> = Vec::with_capacity(atlas_size * atlas_size);
         for y in 0..(atlas_size as i32) {
             for x in 0..(atlas_size as i32) {
                 let fetch = |dx: i32, dy: i32| -> Option<Vector3<u8>> {
@@ -436,7 +435,7 @@ impl LightMap {
         }
 
         // Blur lightmap using simplest box filter.
-        let mut bytes = Vec::with_capacity((atlas_size * atlas_size * 3) as usize);
+        let mut bytes = Vec::with_capacity(atlas_size * atlas_size * 3);
         for y in 0..(atlas_size as i32) {
             for x in 0..(atlas_size as i32) {
                 if x < 1 || y < 1 || x + 1 == atlas_size as i32 || y + 1 == atlas_size as i32 {

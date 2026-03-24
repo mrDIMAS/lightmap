@@ -103,9 +103,9 @@ dependencies = [
 
 [[package]]
 name = "fyrox-math"
-version = "1.0.0-rc.2"
+version = "1.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "85c29d0ef1f72545bb316121825bc6006b6e94ae7d12fb07a9e6ac479b61937f"
+checksum = "14f2cef5c7833be58b1c29165375fadf38caea8795ba01f89e6d678525d3d7a0"
 dependencies = [
  "arrayvec",
  "bytemuck",
@@ -241,7 +241,7 @@ checksum = "bcc35a38544a891a5f7c865aca548a982ccb3b8650a5b06d0fd33a10283c56fc"
 
 [[package]]
 name = "lightmap"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "arrayvec",
  "fxhash",
