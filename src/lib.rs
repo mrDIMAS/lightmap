@@ -126,18 +126,30 @@
 
 #![forbid(unsafe_code)]
 
-pub use fyrox_math as math;
 pub use uvgen;
 
+mod aabb;
 pub mod error;
 pub mod input;
 pub mod light;
+mod octree;
+mod plane;
+mod ray;
+mod utils;
 
-use crate::{input::Mesh, light::LightDefinition};
+use crate::{
+    input::Mesh,
+    light::LightDefinition,
+    octree::OctreeNode,
+    ray::Ray,
+    utils::{
+        barycentric_is_inside, barycentric_to_world, get_barycentric_coords_2d, triangle_area,
+    },
+};
 use arrayvec::ArrayVec;
-use math::{octree::OctreeNode, ray::Ray, Rect};
 use nalgebra::{Vector2, Vector3, Vector4};
 use rayon::prelude::*;
+use rectutils::Rect;
 
 // Computes total area of triangles in surface data and returns size of square in which triangles
 // can fit.
@@ -147,7 +159,7 @@ fn estimate_size(data: &Mesh, texels_per_unit: usize) -> usize {
         let a = data.vertices[triangle[0] as usize].world_position;
         let b = data.vertices[triangle[1] as usize].world_position;
         let c = data.vertices[triangle[2] as usize].world_position;
-        area += math::triangle_area(a, b, c);
+        area += triangle_area(a, b, c);
     }
     area.sqrt().ceil() as usize * texels_per_unit
 }
@@ -184,9 +196,9 @@ fn pick(
 
             let mut current_uv = uv;
             for _ in 0..3 {
-                let barycentric = math::get_barycentric_coords_2d(current_uv, uv_a, uv_b, uv_c);
+                let barycentric = get_barycentric_coords_2d(current_uv, uv_a, uv_b, uv_c);
 
-                if math::barycentric_is_inside(barycentric) {
+                if barycentric_is_inside(barycentric) {
                     let a = data.vertices[ia].world_position;
                     let b = data.vertices[ib].world_position;
                     let c = data.vertices[ic].world_position;
@@ -196,8 +208,8 @@ fn pick(
                     let nc = data.vertices[ic].world_normal;
 
                     return Some((
-                        math::barycentric_to_world(barycentric, a, b, c),
-                        math::barycentric_to_world(barycentric, na, nb, nc),
+                        barycentric_to_world(barycentric, a, b, c),
+                        barycentric_to_world(barycentric, na, nb, nc),
                     ));
                 }
 

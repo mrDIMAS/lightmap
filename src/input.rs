@@ -1,4 +1,4 @@
-use fyrox_math::octree::Octree;
+use crate::octree::Octree;
 use nalgebra::{Vector2, Vector3};
 
 pub struct WorldVertex {
